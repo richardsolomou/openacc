@@ -86,10 +86,12 @@ $(document).ready(function() {
 				// Changes the text in the availability paragraph for the building.
 				$('#' + building.id + ' > p').html(availability + '<span>' + percentagePretty + '</span>');
 
-				// using hsl so we can keep the tone the same and just change the hue
+				// Creates an HSL colour so as to keep the tone and just change the hue.
 				var colour = 'hsl(' + percentage + ', 60%, 60%)';
 
+				// Sets the width of the percentage bar to the percentage of available PCs.
 				$('#' + building.id + ' > .bar > .percent').css('width', percentagePretty);
+				// Sets the colour of the percentage bar to the HSL colour.
 				$('#' + building.id + ' > .bar > .percent').css('background', colour);
 			} else {
 				$('#' + building.id + ' > p').html('Closed');
