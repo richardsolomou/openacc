@@ -73,13 +73,27 @@ $(document).ready(function() {
 		for (var i = 0; i < buildings.length; i++) {
 			// Creates a local variable for the current building.
 			var building = buildings[i];
+			
+			// Gets the availability of the PCs available in the building.
+			var availability = building.pcs.available + ' / ' + building.pcs.total + ' Available';
 
-			var availability = building.pcs.available + ' / ' + building.pcs.total + ' AVAILABLE';
-			var percentage = Math.round(building.pcs.available / building.pcs.total * 100) + '%';
+			if (building.status === 2) {
+				// Gets the percentage of available PCS in the building.
+				var percentage = (building.pcs.available / building.pcs.total) * 100
+				// Tidies up the percentage and adds a percentage symbol.
+				var percentagePretty = Math.floor(percentage) + '%';
 
-			// Changes the text in the availability paragraph for the building.
-			$('#' + building.id + ' > p').html(availability + '<span>' + percentage + '</span>');
+				// Changes the text in the availability paragraph for the building.
+				$('#' + building.id + ' > p').html(availability + '<span>' + percentagePretty + '</span>');
 
+				// using hsl so we can keep the tone the same and just change the hue
+				var colour = 'hsl(' + percentage + ', 60%, 60%)';
+
+				$('#' + building.id + ' > .bar > .percent').css('width', percentagePretty);
+				$('#' + building.id + ' > .bar > .percent').css('background', colour);
+			} else {
+				$('#' + building.id + ' > p').html('Closed');
+			}
 		}
 	});
 
