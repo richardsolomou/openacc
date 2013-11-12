@@ -42,3 +42,43 @@ section:last-child {
 section h1 {
 	font-size: 3em;
 }
+
+
+/**
+ * PERCENTAGE BARS
+ */
+
+section .bar {
+	overflow: hidden;
+	height: 10px;
+	background: #DFDFDF;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+
+section .percent {
+	height: 10px;
+	background: #313131;
+	width: 0%;
+}
+
+#ul .percent {
+	-webkit-transition: width .25s 0s;
+	transition: width .25s .0s;
+}
+
+#pk .percent {
+	-webkit-transition: width .25s .25s;
+	transition: width .25s .25s;
+}
+
+#po .percent {
+	-webkit-transition: width .25s .75s;
+	transition: width .25s .75s;
+}
+
+#ag .percent {
+	-webkit-transition: width .25s 1s;
+	transition: width .25s 1s;
+}
