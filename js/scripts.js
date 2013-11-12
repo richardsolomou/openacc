@@ -2,7 +2,7 @@
 $(document).ready(function() {
 
 	// Main function to run.
-	var main = function(lat, lon, acc) {
+	var main = function(lat, lon) {
 		// Loads the JSON-encoded data from the server using a GET HTTP request.
 		$.getJSON('data.php', function(data) {
 			// Creates an object variable with all the data from the array, including
@@ -97,43 +97,55 @@ $(document).ready(function() {
 					// Sets the colour of the percentage bar to the HSL colour.
 					$('#' + building.id + ' .percent').css('background', colour);
 				} else {
+					// Changes the text in the availability paragraph for the building.
 					$('#' + building.id + ' p').html('Closed');
 				}
 
+				// Checks that the latitude and longitude are not empty.
 				if (lat != '' && lon != '') {
+					// Runs the function to get the distance in kilometres.
 					geo(building.id, building);
 				}
 			}
 
+			// Checks that the latitude and longitude are not empty.
 			if (lat != '' && lon != '') {
+				// Sets the first building in the array as the closest by default.
 				var closest_building = buildings[0];
+
+				// Loops through all the buildings.
 				for (var j = 0; j < buildings.length; j++) {
+					// Sets the current building in a variable.
 					var building = buildings[j];
+
+					// Checks if the building is open and if it's closer to
+					// the user's location that the current closest building.
 					if (building.status == 2 && building.distance < closest_building.distance) {
+						// Sets the current building as the new closest building.
 						closest_building = build;
 					}
 				}
 
-				console.log(acc);
-
-				if ($('#' + closest_building.id + ' h1 span').length === 0) {
-					$('#' + closest_building.id + ' h1').append('<span>(Closest)</span>');
-				} else {
+				// Checks if an inline element inside the heading of the building exists.
+				if ($('#' + closest_building.id + ' h1 span').length !== 0) {
+					// Changes the text in the inline element accordingly.
 					$('#' + closest_building.id + ' h1 span').html('(Closest)');
+				} else {
+					// Creates an inline element with the according text.
+					$('#' + closest_building.id + ' h1').append('<span>(Closest)</span>');
 				}
 			}
-
 		});
 	};
 
 	// Runs the main function once geolocation variables are received.
-	var start = function(lat, lon, acc) {
+	var start = function(lat, lon) {
 		// Runs the function for a first time with the geolocation variables.
-		main(lat, lon, acc);
+		main(lat, lon);
 
 		// Runs the function again every 5 seconds.
 		setInterval(function() {
-			main(lat, lon, acc);
+			main(lat, lon);
 		}, 5000);
 	};
 
@@ -148,13 +160,12 @@ $(document).ready(function() {
 		// Creates a variable that gets the coordinates from the input parameter.
 		var current = pos.coords;
 
-		// Passes the coordinates and the accuracy to the variables created earlier.
+		// Passes the coordinates to the variables created earlier.
 		lat = current.latitude;
 		lon = current.longitude;
-		acc = current.accuracy;
 
 		// Runs the start function with the geolocation variables received.
-		start(lat, lon, acc);
+		start(lat, lon);
 	};
 
 	// Callback that takes a PositionError object as its sole input parameter.
@@ -163,14 +174,16 @@ $(document).ready(function() {
 		console.warn('ERROR(' + err.code + '): ' + err.message);
 
 		// Runs the start function with no geolocation.
-		start('', '', '');
+		start('', '');
 	};
 
+	// Gets the distance in kilometres and returns it on the building availability.
 	var geo = function(id, building) {
 		building.distance = latlontokm(lat, lon, building.coords.lat, building.coords.lon);
 		$('#' + id + ' p span').append(' &bull; ' + building.distance.toString().substring(0, 4) + 'km');	
 	};
 
+	// Gets the difference in kilometres for the two destinations.
 	var latlontokm = function(lat1, lon1, lat2, lon2) {
 		var R = 6371;
 		var dLat = deg2rad(lat2-lat1);
@@ -181,17 +194,17 @@ $(document).ready(function() {
 		return d;
 	};
 
+	// Converts degrees to radius.
 	var deg2rad = function(deg) {
 		return deg * (Math.PI/180);
 	};
 
 	// Runs the main function without geolocation.
-	main('', '', '');
+	main('', '');
 
-	// Sets the default values for the latitude, longitude and accuracy variables.
+	// Sets the default values for the latitude and longitude variables.
 	var lat = '';
 	var lon = '';
-	var acc = '';
 
 	// Uses a geolocation method to get the current position of the device.
 	navigator.geolocation.getCurrentPosition(success, error, options);
