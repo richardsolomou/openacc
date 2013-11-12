@@ -82,3 +82,19 @@ section .percent {
 	-webkit-transition: width .25s 1s;
 	transition: width .25s 1s;
 }
+
+/**
+ * STATUS AND AVAILABILITY
+ */
+section p {
+	color: #535353;
+	font-size: 2.5em;
+}
+
+section span {
+	margin-top: .5em;
+	float: right;
+	font-weight: 200;
+	font-size: .5em;
+	color: #8F8F8F;
+}
