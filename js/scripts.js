@@ -84,17 +84,17 @@ $(document).ready(function() {
 				var percentagePretty = Math.floor(percentage) + '%';
 
 				// Changes the text in the availability paragraph for the building.
-				$('#' + building.id + ' > p').html(availability + '<span>' + percentagePretty + '</span>');
+				$('#' + building.id + ' p').html(availability + '<span>' + percentagePretty + '</span>');
 
 				// Creates an HSL colour so as to keep the tone and just change the hue.
 				var colour = 'hsl(' + percentage + ', 60%, 60%)';
 
 				// Sets the width of the percentage bar to the percentage of available PCs.
-				$('#' + building.id + ' > .bar > .percent').css('width', percentagePretty);
+				$('#' + building.id + ' .percent').css('width', percentagePretty);
 				// Sets the colour of the percentage bar to the HSL colour.
-				$('#' + building.id + ' > .bar > .percent').css('background', colour);
+				$('#' + building.id + ' .percent').css('background', colour);
 			} else {
-				$('#' + building.id + ' > p').html('Closed');
+				$('#' + building.id + ' p').html('Closed');
 			}
 		}
 	});
