@@ -39,6 +39,16 @@ section h1 {
 	font-size: 3em;
 }
 
+section h1 span a {
+	text-decoration: none;
+	background: #ccc;
+	color: #000;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	padding: 5px;
+}
+
 
 /**
  * PERCENTAGE BARS

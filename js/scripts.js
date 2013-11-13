@@ -112,6 +112,10 @@ $(document).ready(function() {
 				if (lat != '' && lon != '' && acc <= 32) {
 					// Runs the function to get the distance in kilometres.
 					geo(building.id, building);
+
+					if ($('#' + building.id + ' h1 span').length === 0) {
+						$('#' + building.id + ' h1').append('<span><a href="https://www.google.com/maps?saddr=' + lat + ',+' + lon + '&daddr=' + building.coords.lat + ',+' + building.coords.lon + '&hl=en&mra=ls&t=m&z=17" target="_blank">Map</a></span>');
+					}
 				}
 			}
 
@@ -133,9 +137,6 @@ $(document).ready(function() {
 						closest_building = building;
 					}
 				}
-
-				// Removes any existing inline elements in the heading of all buildings.
-				$('h1 span').remove();
 
 				// Changes the text in the inline element accordingly.
 				$('#' + closest_building.id + ' p span').html('<strong>' + $('#' + closest_building.id + ' p span').text() + '</strong>');
