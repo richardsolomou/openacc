@@ -166,6 +166,8 @@ $(document).ready(function() {
 	
 	// Callback function that takes a Position object as its sole input parameter.
 	var success = function(pos) {
+		// Clears the timeout of the fail timer.
+		clearTimeout(fail_timeout);
 		// Creates a variable that gets the coordinates from the input parameter.
 		var current = pos.coords;
 
@@ -180,6 +182,8 @@ $(document).ready(function() {
 
 	// Callback that takes a PositionError object as its sole input parameter.
 	var error = function(err) {
+		// Clears the timeout of the fail timer.
+		clearTimeout(fail_timeout);
 		// Prints out a warning if something goes wrong.
 		console.warn('ERROR(' + err.code + '): ' + err.message);
 
@@ -213,14 +217,26 @@ $(document).ready(function() {
 		return deg * (Math.PI/180);
 	};
 
+	// Runs the function without geolocation while we are awaiting confirmation
+	// for using geolocation.
+	var fail = function() {
+		start('', '', '');
+	};
+
 	// Sets the default values for the latitude, longitude and accuracy variables.
 	var lat = '';
 	var lon = '';
 	var acc = '';
 
-	// Runs the main function with no geolocation.
-	main('', '', '');
+	// Runs a timer while we are waiting for the user to allow geolocation.
+	var fail_timeout = setTimeout(function() { fail(); }, 2000);
 
-	// Uses a geolocation method to get the current position of the device.
-	navigator.geolocation.getCurrentPosition(success, error, options);
+	// Checks if geolocation is available on this device.
+	if (navigator.geolocation) {
+		// Uses a geolocation method to get the current position of the device.
+		navigator.geolocation.getCurrentPosition(success, error, options);
+	} else {
+		// Runs the function without geolocation.
+		fail();
+	}
 });
