@@ -3,6 +3,9 @@ $(document).ready(function() {
 
 	// Main function to run.
 	var main = function(lat, lon, acc) {
+		// Prints out the latitude, longitude and accuracy in the console.
+		console.log('Latitude: ' + lat + '\r\n' + 'Longitude: ' + lon + '\r\n' + 'Accuracy: ' + acc);
+
 		// Loads the JSON-encoded data from the server using a GET HTTP request.
 		$.getJSON('data.php', function(data) {
 			// Creates an object variable with all the data from the array, including
@@ -80,6 +83,7 @@ $(document).ready(function() {
 				// Gets the availability of the PCs available in the building.
 				var availability = building.pcs.available + ' / ' + building.pcs.total + ' Available';
 
+				// Checks if the building is open.
 				if (building.status === 2) {
 					// Gets the percentage of available PCS in the building.
 					var percentage = (building.pcs.available / building.pcs.total) * 100
@@ -93,6 +97,12 @@ $(document).ready(function() {
 					$('#' + building.id + ' .percent').css('width', percentagePretty);
 					// Sets the colour of the percentage bar to the HSL colour.
 					$('#' + building.id + ' .percent').css('background', colour);
+
+					// Checks if the inline element in the paragraph exists.
+					if ($('#' + building.id + ' p span').length === 0) {
+						// Changes the text in the availability paragraph for the building.
+						$('#' + building.id + ' p').html(availability + '<span>&nbsp;</span>');
+					}
 				} else {
 					// Resets the width of the percentage bar to the percentage of available PCs.
 					$('#' + building.id + ' .percent').css('width', '0');
@@ -101,26 +111,30 @@ $(document).ready(function() {
 					$('#' + building.id + ' p').html('Closed');
 				}
 
-				if ($('#' + building.id + ' p span').length === 0) {
-					// Changes the text in the availability paragraph for the building.
-					$('#' + building.id + ' p').html(availability + '<span>&nbsp;</span>');
-				}
 
 				// Checks that the latitude and longitude are not empty and the
-				// accuracy is at a maximum of 32.
-				if (lat != '' && lon != '' && acc <= 32) {
+				// accuracy is at a maximum of 150.
+				if (lat != '' && lon != '' && acc <= 150) {
 					// Runs the function to get the distance in kilometres.
 					geo(building.id, building);
 
+					// Checks if the inline element in the heading exists.
 					if ($('#' + building.id + ' h1 span').length === 0) {
+						// Creates a link that navigates the user from their current location to the building.
 						$('#' + building.id + ' h1').append('<span><a href="https://www.google.com/maps?saddr=' + lat + ',+' + lon + '&daddr=' + building.coords.lat + ',+' + building.coords.lon + '&hl=en&mra=ls&t=m&z=17" target="_blank">Map</a></span>');
+					}
+				} else {
+					// Checks if the inline element in the heading exists.
+					if ($('#' + building.id + ' h1 span').length === 0) {
+						// Creates a link that pinpoints to the building's location.
+						$('#' + building.id + ' h1').append('<span><a href="https://www.google.com/maps?q=' + building.coords.lat + ',+' + building.coords.lon + '&hl=en&t=m&z=16" target="_blank">Map</a></span>');
 					}
 				}
 			}
 
 			// Checks that the latitude and longitude are not empty and that the
-			// accuracy is at a maximum of 32.
-			if (lat != '' && lon != '' && acc <= 32) {
+			// accuracy is at a maximum of 150.
+			if (lat != '' && lon != '' && acc <= 150) {
 				// Sets the first building in the array as the closest by default.
 				var closest_building = buildings[0];
 
