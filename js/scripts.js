@@ -17,8 +17,8 @@ $(document).ready(function() {
 					total: data.Library.total
 				},
 				coords: {
-					lat: 50.792470,
-					lon: -1.098845
+					lat: 50.7937,
+					lon: -1.0978
 				}
 			};
 
@@ -33,8 +33,8 @@ $(document).ready(function() {
 					total: data.Park.total
 				},
 				coords: {
-					lat: 50.797570,
-					lon: -1.094108
+					lat: 50.7975,
+					lon: -1.0940
 				}
 			};
 
@@ -49,8 +49,8 @@ $(document).ready(function() {
 					total: data.Portland.total
 				},
 				coords: {
-					lat: 50.798454,
-					lon: -1.099490
+					lat: 50.7986,
+					lon: -1.0995
 				}
 			};
 
@@ -65,8 +65,8 @@ $(document).ready(function() {
 					total: data.Anglesea.total
 				},
 				coords: {
-					lat: 50.797709,
-					lon: -1.096582
+					lat: 50.7978,
+					lon: -1.0965
 				}
 			};
 
@@ -104,7 +104,7 @@ $(document).ready(function() {
 
 				if ($('#' + building.id + ' p span').length === 0) {
 					// Changes the text in the availability paragraph for the building.
-					$('#' + building.id + ' p').html(availability + '<span>Loading...</span>');
+					$('#' + building.id + ' p').html(availability + '<span>&nbsp;</span>');
 				}
 
 				// Checks that the latitude and longitude are not empty and the
