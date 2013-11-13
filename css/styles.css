@@ -12,9 +12,6 @@
 * {
 	margin: 0;
 	padding: 0;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
 }
 
 body {
@@ -30,7 +27,6 @@ body {
 section {
 	overflow: hidden;
 	padding: 10px 20px;
-	height: 25vh;
 	text-transform: uppercase;
 	border-bottom: 2px solid #DDD;
 }
