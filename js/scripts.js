@@ -186,7 +186,7 @@ $(document).ready(function() {
 	// Gets the distance in kilometres and returns it on the building availability.
 	var geo = function(id, building) {
 		building.distance = latlontokm(lat, lon, building.coords.lat, building.coords.lon);
-		$('#' + id + ' p span').append(' &bull; ' + building.distance.toString().substring(0, 4) + 'km');	
+		$('#' + id + ' p span').append(' &bull; ' + building.distance.toString().substr(0, building.distance.toString().indexOf('.')) + 'm');	
 	};
 
 	// Gets the difference in kilometres for the two destinations.
@@ -197,7 +197,7 @@ $(document).ready(function() {
 		var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
 		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
 		var d = R * c;
-		return d;
+		return d * 1000;
 	};
 
 	// Converts degrees to radius.
