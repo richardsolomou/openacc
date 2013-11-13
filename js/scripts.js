@@ -97,6 +97,9 @@ $(document).ready(function() {
 					// Sets the colour of the percentage bar to the HSL colour.
 					$('#' + building.id + ' .percent').css('background', colour);
 				} else {
+					// Resets the width of the percentage bar to the percentage of available PCs.
+					$('#' + building.id + ' .percent').css('width', '0');
+
 					// Changes the text in the availability paragraph for the building.
 					$('#' + building.id + ' p').html('Closed');
 				}
@@ -122,9 +125,12 @@ $(document).ready(function() {
 					// the user's location that the current closest building.
 					if (building.status == 2 && building.distance < closest_building.distance) {
 						// Sets the current building as the new closest building.
-						closest_building = build;
+						closest_building = building;
 					}
 				}
+
+				// Removes any existing inline elements in the heading of all buildings.
+				$('h1 span').remove();
 
 				// Checks if an inline element inside the heading of the building exists.
 				if ($('#' + closest_building.id + ' h1 span').length !== 0) {
