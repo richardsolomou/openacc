@@ -3,6 +3,7 @@ $(document).ready(function() {
 
 	// Main function to run.
 	var main = function(lat, lon, acc) {
+		console.log('Latitude: ' + lat + ', Longitude: ' + lon + ', Accuracy: ' + acc);
 		// Loads the JSON-encoded data from the server using a GET HTTP request.
 		$.getJSON('data.php', function(data) {
 			// Creates an object variable with all the data from the array, including
