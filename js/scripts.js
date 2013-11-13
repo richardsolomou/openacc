@@ -135,14 +135,8 @@ $(document).ready(function() {
 				// Removes any existing inline elements in the heading of all buildings.
 				$('h1 span').remove();
 
-				// Checks if an inline element inside the heading of the building exists.
-				if ($('#' + closest_building.id + ' h1 span').length !== 0) {
-					// Changes the text in the inline element accordingly.
-					$('#' + closest_building.id + ' h1 span').html('(Closest)');
-				} else {
-					// Creates an inline element with the according text.
-					$('#' + closest_building.id + ' h1').append('<span>(Closest)</span>');
-				}
+				// Changes the text in the inline element accordingly.
+				$('#' + closest_building.id + ' p span').html('<strong>' + $('#' + closest_building.id + ' p span').text() + '</strong>');
 			}
 		});
 	};
