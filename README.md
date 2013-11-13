@@ -1,7 +1,7 @@
 OpenAcc
 =======
 
-Open Access Area Locator is a web application for tracking the availability of PCs in the open access areas in the University of Portsmouth.
+Open Access Area Locator is a web application for tracking the availability of PCs in the open access areas in the University of Portsmouth as well as providing geographical information such as the distance between the user and each location and links to navigate to them using Google Maps or Google Navigation.
 
 
 Description
