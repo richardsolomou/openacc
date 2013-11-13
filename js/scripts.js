@@ -102,8 +102,10 @@ $(document).ready(function() {
 					$('#' + building.id + ' p').html('Closed');
 				}
 
-				// Changes the text in the availability paragraph for the building.
-				$('#' + building.id + ' p').html(availability + '<span></span>');
+				if ($('#' + building.id + ' p span').length === 0) {
+					// Changes the text in the availability paragraph for the building.
+					$('#' + building.id + ' p').html(availability + '<span>Loading...</span>');
+				}
 
 				// Checks that the latitude and longitude are not empty and the
 				// accuracy is at a maximum of 32.
@@ -192,7 +194,7 @@ $(document).ready(function() {
 		var time = dist / 0.7;
 		var hours = Math.floor(time / 3600);
 		var minutes = Math.floor(time / 60);
-		$('#' + id + ' p span').append(dist + 'm  &bull; ETA: ' + minutes + 'm');
+		$('#' + id + ' p span').html(dist + 'm  &bull; ETA: ' + minutes + 'm');
 	};
 
 	// Gets the difference in kilometres for the two destinations.
@@ -228,7 +230,7 @@ $(document).ready(function() {
 	// Checks if geolocation is available on this device.
 	if (navigator.geolocation) {
 		// Uses a geolocation method to get the current position of the device.
-		navigator.geolocation.getCurrentPosition(success, error, options);
+		navigator.geolocation.watchPosition(success, error, options);
 	} else {
 		// Runs the function without geolocation.
 		fail();
