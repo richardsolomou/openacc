@@ -15,4 +15,4 @@ The codeathon started at 4pm on the 12th of November 2013 and ended at 4pm on th
 Credits
 =======
 
-[Zac Colley](https://github.com/zaccolley) (Original Idea)
+[Zac Colley](https://github.com/zaccolley/hogwash) (Original Code/Design)
