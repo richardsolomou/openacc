@@ -2,7 +2,7 @@
 $(document).ready(function() {
 
 	// Main function to run.
-	var main = function(lat, lon) {
+	var main = function(lat, lon, acc) {
 		// Loads the JSON-encoded data from the server using a GET HTTP request.
 		$.getJSON('data.php', function(data) {
 			// Creates an object variable with all the data from the array, including
@@ -86,9 +86,6 @@ $(document).ready(function() {
 					// Tidies up the percentage and adds a percentage symbol.
 					var percentagePretty = Math.floor(percentage) + '%';
 
-					// Changes the text in the availability paragraph for the building.
-					$('#' + building.id + ' p').html(availability + '<span>' + percentagePretty + '</span>');
-
 					// Creates an HSL colour so as to keep the tone and just change the hue.
 					var colour = 'hsl(' + percentage + ', 60%, 60%)';
 
@@ -104,15 +101,20 @@ $(document).ready(function() {
 					$('#' + building.id + ' p').html('Closed');
 				}
 
-				// Checks that the latitude and longitude are not empty.
-				if (lat != '' && lon != '') {
+				// Changes the text in the availability paragraph for the building.
+				$('#' + building.id + ' p').html(availability + '<span></span>');
+
+				// Checks that the latitude and longitude are not empty and the
+				// accuracy is at a maximum of 32.
+				if (lat != '' && lon != '' && acc <= 32) {
 					// Runs the function to get the distance in kilometres.
 					geo(building.id, building);
 				}
 			}
 
-			// Checks that the latitude and longitude are not empty.
-			if (lat != '' && lon != '') {
+			// Checks that the latitude and longitude are not empty and that the
+			// accuracy is at a maximum of 32.
+			if (lat != '' && lon != '' && acc <= 32) {
 				// Sets the first building in the array as the closest by default.
 				var closest_building = buildings[0];
 
@@ -145,13 +147,13 @@ $(document).ready(function() {
 	};
 
 	// Runs the main function once geolocation variables are received.
-	var start = function(lat, lon) {
+	var start = function(lat, lon, acc) {
 		// Runs the function for a first time with the geolocation variables.
-		main(lat, lon);
+		main(lat, lon, acc);
 
 		// Runs the function again every 5 seconds.
 		setInterval(function() {
-			main(lat, lon);
+			main(lat, lon, acc);
 		}, 5000);
 	};
 
@@ -169,9 +171,10 @@ $(document).ready(function() {
 		// Passes the coordinates to the variables created earlier.
 		lat = current.latitude;
 		lon = current.longitude;
+		acc = current.accuracy;
 
 		// Runs the start function with the geolocation variables received.
-		start(lat, lon);
+		start(lat, lon, acc);
 	};
 
 	// Callback that takes a PositionError object as its sole input parameter.
@@ -180,13 +183,17 @@ $(document).ready(function() {
 		console.warn('ERROR(' + err.code + '): ' + err.message);
 
 		// Runs the start function with no geolocation.
-		start('', '');
+		start('', '', '');
 	};
 
 	// Gets the distance in kilometres and returns it on the building availability.
 	var geo = function(id, building) {
 		building.distance = latlontokm(lat, lon, building.coords.lat, building.coords.lon);
-		$('#' + id + ' p span').append(' &bull; ' + building.distance.toString().substr(0, building.distance.toString().indexOf('.')) + 'm');	
+		var dist = building.distance.toString().substr(0, building.distance.toString().indexOf('.'));
+		var time = dist / 0.7;
+		var hours = Math.floor(time / 3600);
+		var minutes = Math.floor(time / 60);
+		$('#' + id + ' p span').append(dist + 'm  &bull; ETA: ' + minutes + 'm');
 	};
 
 	// Gets the difference in kilometres for the two destinations.
@@ -205,12 +212,13 @@ $(document).ready(function() {
 		return deg * (Math.PI/180);
 	};
 
-	// Runs the main function without geolocation.
-	main('', '');
-
-	// Sets the default values for the latitude and longitude variables.
+	// Sets the default values for the latitude, longitude and accuracy variables.
 	var lat = '';
 	var lon = '';
+	var acc = '';
+
+	// Runs the main function with no geolocation.
+	main('', '', '');
 
 	// Uses a geolocation method to get the current position of the device.
 	navigator.geolocation.getCurrentPosition(success, error, options);
