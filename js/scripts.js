@@ -42,17 +42,17 @@ $(document).ready(function() {
 
 			// Creates an object variable with all the data from the array, including
 			// the geographic coordinates that specify the building.
-			var po = {
-				name: 'Portland',
-				id: 'po',
-				status: data.Portland.status,
+			var bb = {
+				name: 'Burnaby',
+				id: 'bb',
+				status: data.Burnaby.status,
 				pcs: {
-					available: data.Portland.available,
-					total: data.Portland.total
+					available: data.Burnaby.available,
+					total: data.Burnaby.total
 				},
 				coords: {
-					lat: 50.7986,
-					lon: -1.0995
+					lat: 50.7980,
+					lon: -1.0980
 				}
 			};
 
@@ -73,7 +73,7 @@ $(document).ready(function() {
 			};
 
 			// Creates an array variable with all the data from all the objects.
-			var buildings = [ul, pk, po, ag];
+			var buildings = [ul, pk, bb, ag];
 
 			// Loops through all the buildings in the array.
 			for (var i = 0; i < buildings.length; i++) {
