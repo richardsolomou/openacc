@@ -80,7 +80,7 @@ section .percent {
 	transition: width .25s .25s;
 }
 
-#po .percent {
+#bb .percent {
 	-webkit-transition: width .25s .75s;
 	transition: width .25s .75s;
 }
