@@ -3,9 +3,6 @@ $(document).ready(function() {
 
 	// Main function to run.
 	var main = function(lat, lon, acc) {
-		// Prints out the latitude, longitude and accuracy in the console.
-		console.log('Latitude: ' + lat + '\r\n' + 'Longitude: ' + lon + '\r\n' + 'Accuracy: ' + acc);
-
 		// Loads the JSON-encoded data from the server using a GET HTTP request.
 		$.getJSON('http://openacc-web-01.uni.ds.port.ac.uk/api/v1/buildings/openaccess?callback=?', function(openaccess) {
 			// Loops through all the buildings in the array.
@@ -129,9 +126,6 @@ $(document).ready(function() {
 	var error = function(err) {
 		// Clears the timeout of the fail timer.
 		clearTimeout(fail_timeout);
-		// Prints out a warning if something goes wrong.
-		console.warn('ERROR(' + err.code + '): ' + err.message);
-
 		// Runs the start function with no geolocation.
 		start('', '', '');
 	};
