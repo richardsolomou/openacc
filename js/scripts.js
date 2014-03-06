@@ -7,86 +7,21 @@ $(document).ready(function() {
 		console.log('Latitude: ' + lat + '\r\n' + 'Longitude: ' + lon + '\r\n' + 'Accuracy: ' + acc);
 
 		// Loads the JSON-encoded data from the server using a GET HTTP request.
-		$.getJSON('data.php', function(data) {
-			// Creates an object variable with all the data from the array, including
-			// the geographic coordinates that specify the building.
-			var ul = {
-				name: 'Library',
-				id: 'ul',
-				status: data.Library.status,
-				pcs: {
-					available: data.Library.available,
-					total: data.Library.total
-				},
-				coords: {
-					lat: 50.7937,
-					lon: -1.0978
-				}
-			};
-
-			// Creates an object variable with all the data from the array, including
-			// the geographic coordinates that specify the building.
-			var pk = {
-				name: 'Park',
-				id: 'pk',
-				status: data.Park.status,
-				pcs: {
-					available: data.Park.available,
-					total: data.Park.total
-				},
-				coords: {
-					lat: 50.7975,
-					lon: -1.0940
-				}
-			};
-
-			// Creates an object variable with all the data from the array, including
-			// the geographic coordinates that specify the building.
-			var bb = {
-				name: 'Burnaby',
-				id: 'bb',
-				status: data.Burnaby.status,
-				pcs: {
-					available: data.Burnaby.available,
-					total: data.Burnaby.total
-				},
-				coords: {
-					lat: 50.7980,
-					lon: -1.0980
-				}
-			};
-
-			// Creates an object variable with all the data from the array, including
-			// the geographic coordinates that specify the building.
-			var ag = {
-				name: 'Anglesea',
-				id: 'ag',
-				status: data.Anglesea.status,
-				pcs: {
-					available: data.Anglesea.available,
-					total: data.Anglesea.total
-				},
-				coords: {
-					lat: 50.7978,
-					lon: -1.0965
-				}
-			};
-
-			// Creates an array variable with all the data from all the objects.
-			var buildings = [ul, pk, bb, ag];
-
+		$.getJSON('http://openacc-web-01.uni.ds.port.ac.uk/api/v1/buildings/openaccess?callback=?', function(openaccess) {
 			// Loops through all the buildings in the array.
-			for (var i = 0; i < buildings.length; i++) {
+			for (var i = 0; i < openaccess.length; i++) {
 				// Creates a local variable for the current building.
-				var building = buildings[i];
+				var openacc = openaccess[i];
+				var building = openaccess[i].dependencies.building;
+				delete openaccess[i].dependencies.building;
 				
 				// Gets the availability of the PCs available in the building.
-				var availability = building.pcs.available + ' / ' + building.pcs.total + ' Available';
+				var availability = openacc.available + ' / ' + openacc.total + ' Available';
 
 				// Checks if the building is open.
-				if (building.status === 2) {
+				if (openacc.open) {
 					// Gets the percentage of available PCS in the building.
-					var percentage = (building.pcs.available / building.pcs.total) * 100
+					var percentage = (openacc.available / openacc.total) * 100
 					// Tidies up the percentage and adds a percentage symbol.
 					var percentagePretty = Math.floor(percentage) + '%';
 
@@ -94,21 +29,21 @@ $(document).ready(function() {
 					var colour = 'hsl(' + percentage + ', 60%, 60%)';
 
 					// Sets the width of the percentage bar to the percentage of available PCs.
-					$('#' + building.id + ' .percent').css('width', percentagePretty);
+					$('#' + building.reference + ' .percent').css('width', percentagePretty);
 					// Sets the colour of the percentage bar to the HSL colour.
-					$('#' + building.id + ' .percent').css('background', colour);
+					$('#' + building.reference + ' .percent').css('background', colour);
 
 					// Checks if the inline element in the paragraph exists.
-					if ($('#' + building.id + ' p span').length === 0) {
+					if ($('#' + building.reference + ' p span').length === 0) {
 						// Changes the text in the availability paragraph for the building.
-						$('#' + building.id + ' p').html(availability + '<span>&nbsp;</span>');
+						$('#' + building.reference + ' p').html(availability + '<span>&nbsp;</span>');
 					}
 				} else {
 					// Resets the width of the percentage bar to the percentage of available PCs.
-					$('#' + building.id + ' .percent').css('width', '0');
+					$('#' + building.reference + ' .percent').css('width', '0');
 
 					// Changes the text in the availability paragraph for the building.
-					$('#' + building.id + ' p').html('Closed');
+					$('#' + building.reference + ' p').html('Closed');
 				}
 
 
@@ -116,18 +51,18 @@ $(document).ready(function() {
 				// accuracy is at a maximum of 150.
 				if (lat != '' && lon != '' && acc <= 150) {
 					// Runs the function to get the distance in kilometres.
-					geo(building.id, building);
+					geo(building.reference, building);
 
 					// Checks if the inline element in the heading exists.
-					if ($('#' + building.id + ' h1 span').length === 0) {
+					if ($('#' + building.reference + ' h1 span').length === 0) {
 						// Creates a link that navigates the user from their current location to the building.
-						$('#' + building.id + ' h1').append('<span><a href="https://www.google.com/maps?saddr=' + lat + ',+' + lon + '&daddr=' + building.coords.lat + ',+' + building.coords.lon + '&hl=en&mra=ls&t=m&z=17" target="_blank">Map</a></span>');
+						$('#' + building.reference + ' h1').append('<span><a href="https://www.google.com/maps?saddr=' + lat + ',+' + lon + '&daddr=' + building.latitude + ',+' + building.longitude + '&hl=en&mra=ls&t=m&z=17" target="_blank">Map</a></span>');
 					}
 				} else {
 					// Checks if the inline element in the heading exists.
-					if ($('#' + building.id + ' h1 span').length === 0) {
+					if ($('#' + building.reference + ' h1 span').length === 0) {
 						// Creates a link that pinpoints to the building's location.
-						$('#' + building.id + ' h1').append('<span><a href="https://www.google.com/maps?q=' + building.coords.lat + ',+' + building.coords.lon + '&hl=en&t=m&z=16" target="_blank">Map</a></span>');
+						$('#' + building.reference + ' h1').append('<span><a href="https://www.google.com/maps?q=' + building.latitude + ',+' + building.longitude + '&hl=en&t=m&z=16" target="_blank">Map</a></span>');
 					}
 				}
 			}
@@ -145,14 +80,14 @@ $(document).ready(function() {
 
 					// Checks if the building is open and if it's closer to
 					// the user's location that the current closest building.
-					if (building.status == 2 && building.distance < closest_building.distance) {
+					if (building.open && building.distance < closest_building.distance) {
 						// Sets the current building as the new closest building.
 						closest_building = building;
 					}
 				}
 
 				// Changes the text in the inline element accordingly.
-				$('#' + closest_building.id + ' p span').html('<strong>' + $('#' + closest_building.id + ' p span').text() + '</strong>');
+				$('#' + closest_building.reference + ' p span').html('<strong>' + $('#' + closest_building.reference + ' p span').text() + '</strong>');
 			}
 		});
 	};
@@ -203,7 +138,7 @@ $(document).ready(function() {
 
 	// Gets the distance in kilometres and returns it on the building availability.
 	var geo = function(id, building) {
-		building.distance = latlontokm(lat, lon, building.coords.lat, building.coords.lon);
+		building.distance = latlontokm(lat, lon, building.latitude, building.longitude);
 		var dist = building.distance.toString().substr(0, building.distance.toString().indexOf('.'));
 		var time = dist / 0.7;
 		var hours = Math.floor(time / 3600);
