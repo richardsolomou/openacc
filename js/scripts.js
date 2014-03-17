@@ -4,13 +4,13 @@ $(document).ready(function() {
 	// Main function to run.
 	var main = function(lat, lon, acc) {
 		// Loads the JSON-encoded data from the server using a GET HTTP request.
-		$.getJSON('http://openacc-web-01.uni.ds.port.ac.uk/api/v1/buildings/openaccess?callback=?', function(openaccess) {
+		$.getJSON('http://ssd.port.ac.uk/api/v1/buildings/openaccess?callback=?', function(openaccess) {
 			// Loops through all the buildings in the array.
 			for (var i = 0; i < openaccess.length; i++) {
 				// Creates a local variable for the current building.
 				var openacc = openaccess[i];
-				var building = openaccess[i].dependencies.building;
-				delete openaccess[i].dependencies.building;
+				var building = openaccess[i].building;
+				delete openaccess[i].building;
 				
 				// Gets the availability of the PCs available in the building.
 				var availability = openacc.available + ' / ' + openacc.total + ' Available';
