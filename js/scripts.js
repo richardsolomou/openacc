@@ -4,9 +4,10 @@ $(document).ready(function() {
 	// Main function to run.
 	var main = function(lat, lon, acc) {
 		// Set the access token for the API.
-		var access_token = 'bd368b12-4aed-4f5e-8797-3aa9cfe21395';
+		var api = 'http://ssd.api.port.ac.uk/v1/',
+			access_token = '?access_token=bd368b12-4aed-4f5e-8797-3aa9cfe21395&callback=?';
 		// Loads the JSON-encoded data from the server using a GET HTTP request.
-		$.getJSON('http://ssd.api.port.ac.uk/v1/buildings/openaccess?access_token=' + access_token + '&callback=?', function (openaccess) {
+		$.getJSON(api + 'buildings/openaccess' + access_token, function (openaccess) {
 			// Loops through all the buildings in the array.
 			for (var i = 0; i < openaccess.length; i++) {
 				// Creates a local variable for the current building.
@@ -14,8 +15,6 @@ $(document).ready(function() {
 				var building = openaccess[i].building;
 				delete openaccess[i].building;
 
-				console.dir(building);
-				
 				// Gets the availability of the PCs available in the building.
 				var availability = (openacc.total - openacc.in_use) + ' / ' + openacc.total + ' Available';
 
@@ -47,25 +46,27 @@ $(document).ready(function() {
 					$('#' + building.reference + ' p').html('Closed');
 				}
 
+				// Loads the JSON-encoded data from the server using a GET HTTP request.
+				$.getJSON(api + 'buildings/' + building.reference + access_token, function (buildings) {
+					// Checks that the latitude and longitude are not empty and the
+					// accuracy is at a maximum of 150.
+					if (lat != '' && lon != '' && acc <= 150) {
+						// Runs the function to get the distance in kilometres.
+						geo(building.reference, buildings);
 
-				// Checks that the latitude and longitude are not empty and the
-				// accuracy is at a maximum of 150.
-				if (lat != '' && lon != '' && acc <= 150) {
-					// Runs the function to get the distance in kilometres.
-					geo(building.reference, building);
-
-					// Checks if the inline element in the heading exists.
-					if ($('#' + building.reference + ' h1 span').length === 0) {
-						// Creates a link that navigates the user from their current location to the building.
-						$('#' + building.reference + ' h1').append('<span><a href="https://www.google.com/maps?saddr=' + lat + ',+' + lon + '&daddr=' + building.latitude + ',+' + building.longitude + '&hl=en&mra=ls&t=m&z=17" target="_blank">Map</a></span>');
+						// Checks if the inline element in the heading exists.
+						if ($('#' + building.reference + ' h1 span').length === 0) {
+							// Creates a link that navigates the user from their current location to the building.
+							$('#' + building.reference + ' h1').append('<span><a href="https://www.google.com/maps?saddr=' + lat + ',+' + lon + '&daddr=' + buildings.latitude + ',+' + buildings.longitude + '&hl=en&mra=ls&t=m&z=17" target="_blank">Map</a></span>');
+						}
+					} else {
+						// Checks if the inline element in the heading exists.
+						if ($('#' + building.reference + ' h1 span').length === 0) {
+							// Creates a link that pinpoints to the building's location.
+							$('#' + building.reference + ' h1').append('<span><a href="https://www.google.com/maps?q=' + buildings.latitude + ',+' + buildings.longitude + '&hl=en&t=m&z=16" target="_blank">Map</a></span>');
+						}
 					}
-				} else {
-					// Checks if the inline element in the heading exists.
-					if ($('#' + building.reference + ' h1 span').length === 0) {
-						// Creates a link that pinpoints to the building's location.
-						$('#' + building.reference + ' h1').append('<span><a href="https://www.google.com/maps?q=' + building.latitude + ',+' + building.longitude + '&hl=en&t=m&z=16" target="_blank">Map</a></span>');
-					}
-				}
+				});
 			}
 
 			// Checks that the latitude and longitude are not empty and that the
@@ -130,6 +131,7 @@ $(document).ready(function() {
 	var error = function(err) {
 		// Clears the timeout of the fail timer.
 		clearTimeout(fail_timeout);
+		console.log(err);
 		// Runs the start function with no geolocation.
 		start('', '', '');
 	};
@@ -180,6 +182,7 @@ $(document).ready(function() {
 		navigator.geolocation.watchPosition(success, error, options);
 	} else {
 		// Runs the function without geolocation.
+		console.dir('Geolocation is not supported by this browser');
 		fail();
 	}
 });
