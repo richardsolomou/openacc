@@ -3,8 +3,10 @@ $(document).ready(function() {
 
 	// Main function to run.
 	var main = function(lat, lon, acc) {
+		// Set the access token for the API.
+		var access_token = 'bd368b12-4aed-4f5e-8797-3aa9cfe21395';
 		// Loads the JSON-encoded data from the server using a GET HTTP request.
-		$.getJSON('http://ssd.port.ac.uk/api/v1/buildings/openaccess?callback=?', function(openaccess) {
+		$.getJSON('http://ssd.api.port.ac.uk/v1/buildings/openaccess?access_token=' + access_token, function(openaccess) {
 			// Loops through all the buildings in the array.
 			for (var i = 0; i < openaccess.length; i++) {
 				// Creates a local variable for the current building.
