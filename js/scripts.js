@@ -179,7 +179,7 @@ $(document).ready(function() {
 	// Checks if geolocation is available on this device.
 	if (navigator.geolocation) {
 		// Uses a geolocation method to get the current position of the device.
-		navigator.geolocation.watchPosition(success, error, options);
+		navigator.geolocation.getCurrentPosition(success, error, options);
 	} else {
 		// Runs the function without geolocation.
 		console.dir('Geolocation is not supported by this browser');
