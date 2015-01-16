@@ -6,21 +6,23 @@ $(document).ready(function() {
 		// Set the access token for the API.
 		var access_token = 'bd368b12-4aed-4f5e-8797-3aa9cfe21395';
 		// Loads the JSON-encoded data from the server using a GET HTTP request.
-		$.getJSON('http://ssd.api.port.ac.uk/v1/buildings/openaccess?access_token=' + access_token + '&callback=?', function(openaccess) {
+		$.getJSON('http://ssd.api.port.ac.uk/v1/buildings/openaccess?access_token=' + access_token + '&callback=?', function (openaccess) {
 			// Loops through all the buildings in the array.
 			for (var i = 0; i < openaccess.length; i++) {
 				// Creates a local variable for the current building.
 				var openacc = openaccess[i];
 				var building = openaccess[i].building;
 				delete openaccess[i].building;
+
+				console.dir(building);
 				
 				// Gets the availability of the PCs available in the building.
-				var availability = openacc.available + ' / ' + openacc.total + ' Available';
+				var availability = (openacc.total - openacc.in_use) + ' / ' + openacc.total + ' Available';
 
 				// Checks if the building is open.
 				if (openacc.open) {
 					// Gets the percentage of available PCS in the building.
-					var percentage = (openacc.available / openacc.total) * 100
+					var percentage = (openacc.total - openacc.in_use) / openacc.total * 100;
 					// Tidies up the percentage and adds a percentage symbol.
 					var percentagePretty = Math.floor(percentage) + '%';
 
