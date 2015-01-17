@@ -44,6 +44,7 @@ $(document).ready(function() {
 
 						// Sets the width of the percentage bar to the percentage of available PCs.
 						$('#' + openacc.reference + ' .percent').css('width', percentagePretty);
+						$('#' + openacc.reference + ' .percent').text(percentagePretty);
 						// Sets the colour of the percentage bar to the HSL colour.
 						$('#' + openacc.reference + ' .percent').css('background', colour);
 
@@ -69,13 +70,13 @@ $(document).ready(function() {
 						// Checks if the inline element in the heading exists.
 						if ($('#' + openacc.reference + ' h1 span').length === 0) {
 							// Creates a link that navigates the user from their current location to the building.
-							$('#' + openacc.reference + ' h1').append('<span><a href="https://www.google.com/maps?saddr=' + lat + ',+' + lon + '&daddr=' + openacc.latitude + ',+' + openacc.longitude + '&hl=en&mra=ls&t=m&z=17" target="_blank">Map</a></span>');
+							$('#' + openacc.reference + ' h1').append('<span><a href="https://www.google.com/maps?saddr=' + lat + ',+' + lon + '&daddr=' + openacc.latitude + ',+' + openacc.longitude + '&hl=en&mra=ls&t=m&z=17" target="_blank">MAP</a></span>');
 						}
 					} else {
 						// Checks if the inline element in the heading exists.
 						if ($('#' + openacc.reference + ' h1 span').length === 0) {
 							// Creates a link that pinpoints to the building's location.
-							$('#' + openacc.reference + ' h1').append('<span><a href="https://www.google.com/maps?q=' + openacc.latitude + ',+' + openacc.longitude + '&hl=en&t=m&z=16" target="_blank">Map</a></span>');
+							$('#' + openacc.reference + ' h1').append('<span><a href="https://www.google.com/maps?q=' + openacc.latitude + ',+' + openacc.longitude + '&hl=en&t=m&z=16" target="_blank">MAP</a></span>');
 						}
 					}
 				}

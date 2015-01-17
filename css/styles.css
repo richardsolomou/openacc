@@ -47,15 +47,16 @@ section h1 span a {
 
 section .bar {
 	overflow: hidden;
-	height: 10px;
+	height: 22px;
+	text-align: center;
 	background: #DFDFDF;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
 }
 
 section .percent {
-	height: 10px;
+	height: 22px;
 	background: #313131;
 	*background: #313131!important;
 	width: 0%;
