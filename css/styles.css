@@ -1,11 +1,4 @@
 /**
- * FONTS
- */
-
-@import url('http://fonts.googleapis.com/css?family=Dosis:400,700');
-
-
-/**
  * GLOBAL
  */
 
@@ -16,7 +9,6 @@
 
 body {
 	color: #3F3F3F;
-	font-family: 'Dosis', sans-serif;
 }
 
 
@@ -27,7 +19,6 @@ body {
 section {
 	overflow: hidden;
 	padding: 10px 20px;
-	text-transform: uppercase;
 	border-bottom: 2px solid #DDD;
 }
 
@@ -75,19 +66,19 @@ section .percent {
 	transition: width .25s .0s;
 }
 
-#pk .percent {
+#po .percent {
 	-webkit-transition: width .25s .25s;
 	transition: width .25s .25s;
 }
 
-#bb .percent {
-	-webkit-transition: width .25s .75s;
-	transition: width .25s .75s;
+#pk .percent {
+	-webkit-transition: width .25s .50s;
+	transition: width .25s .50s;
 }
 
 #ag .percent {
-	-webkit-transition: width .25s 1s;
-	transition: width .25s 1s;
+	-webkit-transition: width .25s .75s;
+	transition: width .25s .75s;
 }
 
 

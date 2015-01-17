@@ -30,7 +30,7 @@ $(document).ready(function() {
 				for (var k = 0; k < oaa.length; k++) {
 					var openacc = oaa[k];
 					// Gets the availability of the PCs available in the building.
-					var availability = (openacc.total - openacc.in_use) + ' / ' + openacc.total + ' Available';
+					var availability = 'Available: ' + (openacc.total - openacc.in_use) + ' / ' + openacc.total;
 
 					// Checks if the building is open.
 					if (openacc.open) {
@@ -100,7 +100,7 @@ $(document).ready(function() {
 					}
 
 					// Changes the text in the inline element accordingly.
-					$('#' + closest_building.reference + ' p span').html('<strong>' + $('#' + closest_building.reference + ' p span').text() + ' (Closest)</strong>');
+					$('#' + closest_building.reference + ' p span').html('<strong>' + $('#' + closest_building.reference + ' p span').text() + '</strong>');
 				}
 			});
 		});
