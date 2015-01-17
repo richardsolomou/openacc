@@ -115,7 +115,7 @@ $(document).ready(function() {
 		// Runs the function again every 5 seconds.
 		setInterval(function() {
 			main(lat, lon, acc);
-		}, 5000);
+		}, 2000);
 	};
 
 	// Sets the PositionOptions to be used to get the user's current location.
